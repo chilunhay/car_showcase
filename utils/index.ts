@@ -46,6 +46,8 @@ export const generateCarImageUrl = (car: CarProps, angle?: string) => {
   url.searchParams.append("zoomType", "fullscreen");
   url.searchParams.append("modelYear", `${year}`);
   url.searchParams.append("angle", `${angle}`);
+
+  return `${url}`;
 };
 
 export const updateSearchParams = (type: string, value: string) => {
@@ -54,6 +56,21 @@ export const updateSearchParams = (type: string, value: string) => {
   searchParams.set(type, value);
 
   const newPathname = `${window.location.pathname}?${searchParams.toString()}`;
+
+  return newPathname;
+};
+
+export const deleteSearchParams = (type: string) => {
+  // Set the specified search parameter to the given value
+  const newSearchParams = new URLSearchParams(window.location.search);
+
+  // Delete the specified search parameter
+  newSearchParams.delete(type.toLocaleLowerCase());
+
+  // Construct the updated URL pathname with the deleted search parameter
+  const newPathname = `${
+    window.location.pathname
+  }?${newSearchParams.toString()}`;
 
   return newPathname;
 };

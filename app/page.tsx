@@ -1,14 +1,13 @@
 "use client";
 
-import { CarCard, CustomFilter, Hero, SearchBar, ShowMore } from "@/components";
 import { fetchCars } from "@/utils";
 import { fuels, yearsOfProduction } from "@/constants";
+import { CarCard, ShowMore, SearchBar, CustomFilter, Hero } from "@/components";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { CarState } from "@/types";
 
 export default function Home() {
-  const [allCars, setAllCars] = useState<CarState>([]);
+  const [allCars, setAllCars] = useState([]);
   const [loading, setLoading] = useState(false);
 
   // search states
@@ -43,8 +42,6 @@ export default function Home() {
   };
 
   useEffect(() => {
-    // console.log(fuel, year, limit, manufacturer, model);
-
     getCars();
   }, [fuel, year, limit, manufacturer, model]);
 
@@ -57,27 +54,23 @@ export default function Home() {
       <div className="mt-12 padding-x padding-y max-width" id="discover">
         <div className="home__text-container">
           <h1 className="text-4xl font-extrabold">Car Catalogue</h1>
-          <p>Explore the cars you might like</p>
+          <p>Explore out cars you might like</p>
         </div>
 
         <div className="home__filters">
           <SearchBar setManuFacturer={setManuFacturer} setModel={setModel} />
 
           <div className="home__filter-container">
-            <CustomFilter title="fuel" options={fuels} setFilter={setFuel} />
-            <CustomFilter
-              title="year"
-              options={yearsOfProduction}
-              setFilter={setYear}
-            />
+            <CustomFilter options={fuels} setFilter={setFuel} />
+            <CustomFilter options={yearsOfProduction} setFilter={setYear} />
           </div>
         </div>
 
         {allCars.length > 0 ? (
           <section>
             <div className="home__cars-wrapper">
-              {allCars?.map((car, key) => (
-                <CarCard key={key} car={car} />
+              {allCars?.map((car, index) => (
+                <CarCard car={car} key={index} />
               ))}
             </div>
 
@@ -92,7 +85,6 @@ export default function Home() {
                 />
               </div>
             )}
-
             <ShowMore
               pageNumber={limit / 10}
               isNext={limit > allCars.length}
@@ -102,7 +94,6 @@ export default function Home() {
         ) : (
           <div className="home__error-container">
             <h2 className="text-black text-xl font-bold">Oops, no results</h2>
-            <p>{allCars?.message}</p>
           </div>
         )}
       </div>
